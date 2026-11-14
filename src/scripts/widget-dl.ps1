@@ -141,12 +141,27 @@ switch ($Action) {
 
         $last = -1
         $stable = 0
+        $missing = 0
         $leaf = Split-Path $WatchPath -Leaf
 
         while ($true) {
+            $exists = Test-Path $WatchPath
             $size = 0
-            if (Test-Path $WatchPath) {
-                try { $size = (Get-Item $WatchPath).Length } catch { }
+            if ($exists) {
+                try { $size = (Get-Item $WatchPath).Length } catch { $exists = $false }
+            }
+
+            # 文件还没出现 ≠ 0 字节下载失败。等它，别急着判失败。
+            if (-not $exists) {
+                $stable = 0
+                $last = -1
+                $missing++
+                if ($missing -ge 150) {
+                    & $PSCommandPath fail -Id $Id -Message '等了 5 分钟，文件一直没出现' | Out-Null
+                    break
+                }
+                Start-Sleep -Seconds 2
+                continue
             }
 
             & $PSCommandPath update -Id $Id -Done $size -Total $Total | Out-Null
