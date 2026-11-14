@@ -1,0 +1,23 @@
+# 依赖
+node_modules/
+package-lock.json.bak*
+
+# 运行时产物
+logs/
+*.log
+state.json
+
+# 备份
+*.bak-*
+*.bak
+
+# 截图原始素材（只提交精选后的 screenshots/）
+_shots/
+
+# 归档（保留在本地，不进仓库）
+archive/
+
+# 系统垃圾
+Thumbs.db
+desktop.ini
+.DS_Store

@@ -1,0 +1,13 @@
+{
+  "name": "topmost-widget",
+  "version": "0.1.0",
+  "private": true,
+  "description": "常驻置顶显示板：HTTP 接口 + 多调用方 block 渲染",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "45.3.2"
+  }
+}
