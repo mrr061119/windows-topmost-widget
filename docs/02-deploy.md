@@ -132,3 +132,5 @@
 3. **`.cmd` 别写中文**：UTF-8 注释在 GBK 代码页下会被拆成乱命令。全 ASCII。
 4. **Electron 进程名不能乱杀**：`C:\DSH\harness\home\electron\electron.exe` 是 DSH 自己的，`taskkill /IM electron.exe` 会连坐。杀自己的实例认路径或认端口。
 5. **`win.showInactive()`**：用这个而不是 `show()`，避免抢焦点把用户的输入打断。
+| 15:30 | watch 模式补边界：文件一直 0 字节时报 fail，不再假装 done | 修复「下载失败也显示成功」 |
+| 15:32 | 规则 F.2 改成「首选 watch，手动模式才会踩单位坑」 | 同一错误当天出现两次（MB 当字节） |

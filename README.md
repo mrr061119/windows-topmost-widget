@@ -111,20 +111,26 @@ POST /api/v1/toast    { text, kind: ok|warn|err, ttl_ms }
 
 ### B. PowerShell 客户端
 
-`src/scripts/widget-dl.ps1` —— 下载进度：
+`src/scripts/widget-dl.ps1` —— 下载进度。
+
+**首选 `watch`**：给它文件路径，它自己读大小、算速度、下完自己收尾。单位不可能错。
 
 ```powershell
-# 一条命令：自己盯文件、算速度、下完自己收尾
 .\widget-dl.ps1 watch -Id "dl:model" -Name "model.gguf" -WatchPath "D:\dl\model.gguf"
+```
 
-# 或者手动控制
+**只有拿不到文件路径时**才手动控制，且必须自己保证单位是**字节**：
+
+```powershell
 .\widget-dl.ps1 start  -Id "npm:pkg" -Name "npm install foo" -Total 0
 .\widget-dl.ps1 update -Id "npm:pkg" -Done 1234567 -Total 4567890
 .\widget-dl.ps1 done   -Id "npm:pkg" -Done 4567890
 .\widget-dl.ps1 fail   -Id "npm:pkg" -Message "EADDRINUSE"
 ```
 
-> `-Done` / `-Total` 的单位是**字节**。传错单位会显示成 `1.6 KB / 3.0 KB` 这种鬼东西。
+> ⚠️ `-Done` / `-Total` 的单位是**字节**。传成 MB 不会报错，只会显示 `4.2 KB / 3.4 KB` 这种鬼东西，而且进度条会算错。这个坑踩过两次，所以 `watch` 是首选。
+
+`watch` 的完成判定：文件连续 6 秒不再增长、且没有 `curl` 在写它。文件一直是 0 字节则报失败，不会假装成功。
 
 `src/scripts/widget-notice.ps1` —— 需要用户确认的提醒：
 

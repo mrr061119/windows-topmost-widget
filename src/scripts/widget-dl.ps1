@@ -158,7 +158,11 @@ switch ($Action) {
                 Where-Object { $_.CommandLine -and $_.CommandLine.Contains($leaf) }
 
             if ($stable -ge 3 -and -not $writing) {
-                & $PSCommandPath done -Id $Id -Done $size | Out-Null
+                if ($size -gt 0) {
+                    & $PSCommandPath done -Id $Id -Done $size | Out-Null
+                } else {
+                    & $PSCommandPath fail -Id $Id -Message '文件一直是空的（下载可能失败了）' | Out-Null
+                }
                 break
             }
 
