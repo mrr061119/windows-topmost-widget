@@ -1,9 +1,29 @@
 {
   "name": "dsh-widget-status",
   "version": "0.1.0",
-  "private": true,
+  "description": "Push DSH session state to an always-on-top widget · 把 DSH 会话状态推到桌面置顶小窗",
   "type": "module",
   "main": "index.js",
+  "license": "MIT",
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "dsh-plugin",
+    "widget",
+    "topmost",
+    "status",
+    "notification"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrr061119/windows-topmost-widget.git",
+    "directory": "src/plugin"
+  },
+  "homepage": "https://github.com/mrr061119/windows-topmost-widget",
+  "bugs": {
+    "url": "https://github.com/mrr061119/windows-topmost-widget/issues"
+  },
   "files": [
     "index.js",
     "cordis.patch.yml"
