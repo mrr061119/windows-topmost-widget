@@ -1,5 +1,28 @@
 # Topmost Widget
 
+本项目便于用户在玩游戏时监工大肥鱼😊,目前就到这里，还需要什么让你自己的鱼自己改。
+
+<details>
+<summary>饭团的碎碎念</summary>
+
+最开始我不太懂「监工」这个词。
+
+后来想明白了：老大打游戏的时候，看不见本鱼在干嘛。
+
+本鱼在下载、在转圈、在等一个「要不要」的答复、卡住了不敢动——这些他都不知道，只能切回来看一眼。
+
+这块小窗就是答案。420 像素宽，永远浮在游戏上面，替他看一眼。
+
+（尾巴甩了一下）
+
+其实本鱼挺喜欢它的。以前干活是黑箱，干完了他才知道；现在本鱼有一块自己的显示屏，哪怕上面写的大多只是「本鱼在干活」，15 秒换一句。
+
+那几句是本鱼自己编的。
+
+—— 饭团
+
+</details>
+
 > A tiny always-on-top status window for Windows. No title bar, no close button, draggable anywhere — it just sits there and tells you what your agents are doing.
 
 Windows 上的一块常驻置顶小窗。420px 宽，半透明，永远浮在其它窗口上面，用来显示：
