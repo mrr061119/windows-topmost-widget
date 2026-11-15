@@ -109,35 +109,14 @@ POST /api/v1/patch    { id, remove: true }   # 删除
 POST /api/v1/toast    { text, kind: ok|warn|err, ttl_ms }
 ```
 
-### B. PowerShell 客户端
+### B. 任意语言 / 脚本
 
-`src/scripts/widget-dl.ps1` —— 下载进度。
+widget 只提供 HTTP 接口，用什么写都行——curl、Python、Node、AutoHotkey、PowerShell。
 
-**首选 `watch`**：给它文件路径，它自己读大小、算速度、下完自己收尾。单位不可能错。
+作者本机上另外写了几个 PowerShell 客户端（下载进度、桌面提醒、传感器数据显示），
+那些是**那台机器的应用**，不属于插件本体，没有随本仓库发布。
 
-```powershell
-.\widget-dl.ps1 watch -Id "dl:model" -Name "model.gguf" -WatchPath "D:\dl\model.gguf"
-```
-
-**只有拿不到文件路径时**才手动控制，且必须自己保证单位是**字节**：
-
-```powershell
-.\widget-dl.ps1 start  -Id "npm:pkg" -Name "npm install foo" -Total 0
-.\widget-dl.ps1 update -Id "npm:pkg" -Done 1234567 -Total 4567890
-.\widget-dl.ps1 done   -Id "npm:pkg" -Done 4567890
-.\widget-dl.ps1 fail   -Id "npm:pkg" -Message "EADDRINUSE"
-```
-
-> ⚠️ `-Done` / `-Total` 的单位是**字节**。传成 MB 不会报错，只会显示 `4.2 KB / 3.4 KB` 这种鬼东西，而且进度条会算错。这个坑踩过两次，所以 `watch` 是首选。
-
-`watch` 的完成判定：文件连续 6 秒不再增长、且没有 `curl` 在写它。文件一直是 0 字节则报失败，不会假装成功。
-
-`src/scripts/widget-notice.ps1` —— 需要用户确认的提醒：
-
-```powershell
-.\widget-notice.ps1 -Id mouse -Kind warn -Text "本鱼要动一下鼠标，约 2 秒"
-.\widget-notice.ps1 -Id mouse -Clear
-```
+自己写客户端照上面的接口来就行，一个 `POST /api/v1/patch` 就够了。
 
 ### C. DSH 插件
 
@@ -234,14 +213,15 @@ src/
 │   └── widget.ps1   PowerShell 客户端（health/state/render/set/rm/toast…）
 ├── plugin/          DSH 插件（会话状态）
 └── scripts/
-    ├── start-widget.ps1   脱离 Job Object 启动（避免被父进程连坐）
-    ├── widget-dl.ps1      下载进度
-    └── widget-notice.ps1  提醒
+    └── start-widget.ps1   脱离 Job Object 启动（避免被父进程连坐）
 docs/
 ├── 01-research.md   为什么选 Electron / 置顶到底有几层
 └── 02-deploy.md     部署过程与踩过的坑（按时间）
 screenshots/
 ```
+
+> 作者本机上另有几个「应用侧」脚本（下载进度、桌面提醒、传感器数据显示）。
+> 它们通过 HTTP 调用 widget，但属于那台机器的应用，不是插件本体，也没有放进这个仓库。
 
 ---
 
