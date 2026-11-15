@@ -109,12 +109,26 @@ POST /api/v1/patch    { id, remove: true }   # 删除
 POST /api/v1/toast    { text, kind: ok|warn|err, ttl_ms }
 ```
 
-### B. 任意语言 / 脚本
+### B. 示例客户端
 
-widget 只提供 HTTP 接口，用什么写都行——curl、Python、Node、AutoHotkey、PowerShell。
+`examples/widget-dl.ps1` —— 一个完整的下载进度客户端。可以直接用，也可以只看它的写法。
 
-作者本机上另外写了几个 PowerShell 客户端（下载进度、桌面提醒、传感器数据显示），
-那些是**那台机器的应用**，不属于插件本体，没有随本仓库发布。
+```powershell
+# 首选：给它文件路径，自己读大小、算速度、下完自己收尾
+.\examples\widget-dl.ps1 watch -Id "dl:model" -Name "model.gguf" -WatchPath "D:\dl\model.gguf"
+
+# 手动控制（-Done / -Total 的单位是字节）
+.\examples\widget-dl.ps1 start  -Id "npm:pkg" -Name "npm install foo" -Total 0
+.\examples\widget-dl.ps1 update -Id "npm:pkg" -Done 1234567 -Total 4567890
+.\examples\widget-dl.ps1 done   -Id "npm:pkg" -Done 4567890
+.\examples\widget-dl.ps1 fail   -Id "npm:pkg" -Message "EADDRINUSE"
+```
+
+> ⚠️ `-Done` / `-Total` 传的是**字节**。传成 MB 不会报错，只会显示 `4.2 KB / 3.4 KB` 这种假数字，进度条也会算错。
+
+**它不是插件依赖**——widget 本身不需要它，删掉照常运行。放进来只是因为「怎么调这个接口」光看文档不好理解。
+
+作者本机上还有别的客户端（桌面提醒、传感器数据显示），那些绑死了本机的数据源，没有随仓库发布。
 
 自己写客户端照上面的接口来就行，一个 `POST /api/v1/patch` 就够了。
 
@@ -212,8 +226,10 @@ src/
 │   ├── start-widget.cmd
 │   └── widget.ps1   PowerShell 客户端（health/state/render/set/rm/toast…）
 ├── plugin/          DSH 插件（会话状态）
-└── scripts/
-    └── start-widget.ps1   脱离 Job Object 启动（避免被父进程连坐）
+├── scripts/
+│   └── start-widget.ps1   脱离 Job Object 启动（避免被父进程连坐）
+examples/
+└── widget-dl.ps1    下载进度客户端（参考实现，不是插件依赖）
 docs/
 ├── 01-research.md   为什么选 Electron / 置顶到底有几层
 └── 02-deploy.md     部署过程与踩过的坑（按时间）

@@ -19,6 +19,7 @@
 | `src/widget/widget.ps1` | 自带的 PowerShell 客户端：health / state / render / patch / toast / window |
 | `src/plugin/` | DSH 插件（会话状态），`index.js` + `cordis.patch.yml` + `package.json` |
 | `src/scripts/start-widget.ps1` | 启动器，用 WMI 脱离 Job Object |
+| `examples/widget-dl.ps1` | 下载进度客户端，**参考实现**（见下） |
 | `docs/01-research.md` | 为什么选 Electron、置顶到底有几层 |
 | `docs/02-deploy.md` | 部署过程与踩过的坑（按时间） |
 
@@ -30,10 +31,19 @@
 
 | 脚本 | 本机位置 | 作用 | 为什么不算本体 |
 |---|---|---|---|
-| `widget-dl.ps1` | `C:\Scripts\AI\` | 下载进度条 + 实时速度 | 依赖本机 DSH 规则 F.2；`watch` 的完成判定靠 `curl.exe` |
 | `widget-notice.ps1` | `C:\Scripts\AI\` | 需要人确认的提醒 | 文案是这台机器的人格 |
 | `widget-env.ps1` | `C:\Scripts\AI\` | 香橙派 M701 环境数据常驻显示 | 直接绑死 `192.168.31.66:8080/api/latest` 和它的字段形状 |
 | startup.json 的 `widget-env` 条目 | `C:\Apps\Launchers\` | 开机拉起上面那个 | 本机启动编排，不是插件的一部分 |
+
+## 介于两者之间：`examples/widget-dl.ps1`
+
+下载进度客户端，**在仓库里，但不是插件依赖**——widget 删掉它照常运行。
+
+放进来是因为：光看接口文档不知道「一个真实客户端长什么样」，而这个又是完整的、
+带 `watch` 自动收尾、带单位坑注释的参考实现。
+
+判断它的位置用的不是「谁调它」，而是「它对别的机器有没有意义」：有。
+不带它的话，F.2 那条「下载必须上置顶」的规则就得从零写一遍。
 
 ---
 
